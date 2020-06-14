@@ -15,10 +15,11 @@ var mockData = function () {
     "Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.",
     "Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!"
   ];
-  for (var index = 0; index < 25; index++) {
 
+  for (var index = 0; index < 25; index++) {
     var comments = [];
-    for (var commentIndex = 0; commentIndex < getRandomIntInclusive(1, 6); commentIndex++) {
+    var commentsAmount = getRandomIntInclusive(1, 6);
+    for (var commentIndex = 0; commentIndex < commentsAmount; commentIndex++) {
       var userIndexRandom = getRandomIntInclusive(0, 5);
       comments[commentIndex] = {
         avatar: "img/avatar-" + userIndexRandom + ".svg",
@@ -38,6 +39,23 @@ var mockData = function () {
   return photos;
 };
 
-console.log(mockData());
+var data = mockData();
+var fragment = document.createDocumentFragment();
+var template = document.querySelector('#picture');
+var pictures = document.querySelector('.pictures');
 
+for ( var index = 0; index < data.length; index++) {
+  console.log(data[index]);
+  console.log(template);
 
+  var pictureImg = template.querySelector('.picture__img');
+
+  pictureImg.src = data[index].url;
+
+  var clone = document.importNode(template.content, true);
+  fragment.appendChild(clone);
+};
+
+pictures.appendChild(fragment);
+
+console.log(fragment);
