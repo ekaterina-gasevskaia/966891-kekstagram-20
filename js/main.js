@@ -1,3 +1,4 @@
+'use strict';
 var getRandomIntInclusive = function (min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -6,14 +7,14 @@ var getRandomIntInclusive = function (min, max) {
 
 var mockData = function () {
   var photos = [];
-  var userNames = ["Юлия", "Алексей", "Дарья", "Михаил", "Алёна", "Мария"];
+  var userNames = ['Юлия', 'Алексей', 'Дарья', 'Михаил', 'Алёна', 'Мария'];
   var userComments = [
-    "Всё отлично!",
-    "В целом всё неплохо. Но не всё.",
-    "Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.",
-    "Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.",
-    "Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.",
-    "Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!"
+    'Всё отлично!',
+    'В целом всё неплохо. Но не всё.',
+    'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+    'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+    'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+    'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
   ];
 
   for (var index = 0; index < 25; index++) {
@@ -22,40 +23,39 @@ var mockData = function () {
     for (var commentIndex = 0; commentIndex < commentsAmount; commentIndex++) {
       var userIndexRandom = getRandomIntInclusive(0, 5);
       comments[commentIndex] = {
-        avatar: "img/avatar-" + userIndexRandom + ".svg",
+        avatar: 'img/avatar-' + userIndexRandom + '.svg',
         message: userComments[getRandomIntInclusive(0, 5)],
         name: userNames[userIndexRandom]
       };
-    };
+    }
 
-    var photo = {
-      url: "photos/" + (index + 1) + ".jpg",
-      description: "йцукенгшщзхъ",
+    photos[index] = {
+      url: 'photos/' + (index + 1) + '.jpg',
+      description: 'йцукенгшщзхъ',
       likes: getRandomIntInclusive(15, 200),
       comments: comments
     };
-    photos[index] = photo;
-  };
+  }
   return photos;
 };
 
-var data = mockData();
-var fragment = document.createDocumentFragment();
-var template = document.querySelector('#picture');
-var pictures = document.querySelector('.pictures');
-
-for ( var index = 0; index < data.length; index++) {
-  console.log(data[index]);
-  console.log(template);
-
-  var pictureImg = template.querySelector('.picture__img');
-
-  pictureImg.src = data[index].url;
-
-  var clone = document.importNode(template.content, true);
-  fragment.appendChild(clone);
+var fillTemplate = function (template, photoData) {
+  var clonedElement = template.cloneNode(true);
+  clonedElement.querySelector('.picture__img').src = photoData.url;
+  clonedElement.querySelector('.picture__likes').textContent = photoData.likes;
+  clonedElement.querySelector('.picture__comments').textContent = photoData.comments.length;
+  return clonedElement;
 };
 
-pictures.appendChild(fragment);
+var render = function (dataArray) {
+  var templateContent = document.querySelector('#picture').content;
+  var pictures = document.querySelector('.pictures');
 
-console.log(fragment);
+  for (var index = 0; index < dataArray.length; index++) {
+    var clonedElement = fillTemplate(templateContent, dataArray[index]);
+    pictures.appendChild(clonedElement);
+  }
+};
+
+var data = mockData();
+render(data);
