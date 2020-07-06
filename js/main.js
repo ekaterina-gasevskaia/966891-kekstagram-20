@@ -22,19 +22,19 @@ var mockData = function () {
     var commentsAmount = getRandomIntInclusive(1, 6);
     for (var commentIndex = 0; commentIndex < commentsAmount; commentIndex++) {
       var userIndexRandom = getRandomIntInclusive(0, 5);
-      comments[commentIndex] = {
-        avatar: 'img/avatar-' + userIndexRandom + '.svg',
+      comments.push({
+        avatar: 'img/avatar-' + (userIndexRandom + 1) + '.svg',
         message: userComments[getRandomIntInclusive(0, 5)],
         name: userNames[userIndexRandom]
-      };
+      });
     }
 
-    photos[index] = {
+    photos.push({
       url: 'photos/' + (index + 1) + '.jpg',
       description: 'йцукенгшщзхъ',
       likes: getRandomIntInclusive(15, 200),
       comments: comments
-    };
+    });
   }
   return photos;
 };
