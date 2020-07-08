@@ -57,30 +57,40 @@ var render = function (dataArray) {
   }
 };
 
+var showBigPicture = function (picture) {
+  var bigPicture = document.querySelector('.big-picture');
+  bigPicture.classList.remove('hidden');
+
+  bigPicture.querySelector('.big-picture__img > img').src = picture.url;
+  bigPicture.querySelector('.likes-count').textContent = picture.likes;
+  bigPicture.querySelector('.comments-count').textContent = picture.comments.length;
+  bigPicture.querySelector('.social__caption').textContent = picture.description;
+  bigPicture.querySelector('.social__comment-count').classList.add('hidden');
+  bigPicture.querySelector('.comments-loader').classList.add('hidden');
+
+  var socialComments = bigPicture.querySelector('.social__comments');
+
+  for (var index = 0; index < picture.comments.length; index++) {
+    var comment = picture.comments[index];
+    var commentLi = document.createElement('li');
+    commentLi.classList.add('social__comment');
+    socialComments.appendChild(commentLi);
+    var commentImg = document.createElement('img');
+    commentImg.classList.add('social__picture');
+    commentImg.src = comment.avatar;
+    commentImg.alt = comment.name;
+    commentImg.width = 35;
+    commentImg.height = 35;
+    commentLi.appendChild(commentImg);
+    var commentP = document.createElement('p');
+    commentP.classList.add('social__text');
+    commentP.textContent = comment.message;
+    commentLi.appendChild(commentP);
+  }
+
+  document.querySelector('body').classList.add('modal-open');
+};
+
 var data = mockData();
 render(data);
-
-var bigPicture = document.querySelector('.big-picture');
-bigPicture.classList.remove('hidden');
-
-bigPicture.querySelector('.big-picture__img > img').src = data[0].url;
-bigPicture.querySelector('.likes-count').textContent = data[0].likes;
-bigPicture.querySelector('.comments-count').textContent = data[0].comments.length;
-bigPicture.querySelector('.social__caption').textContent = data[0].description;
-bigPicture.querySelector('.social__comment-count').classList.add('hidden');
-bigPicture.querySelector('.comments-loader').classList.add('hidden');
-
-var socialComments = bigPicture.querySelector('.social__comments');
-var templateContentComment = document.querySelector('#comment').content;
-
-for (var index = 0; index < data[0].comments.length; index++) {
-  var comment = data[0].comments[index];
-  var clonedElementContents = templateContentComment.cloneNode(true);
-  var socialPicture = clonedElementContents.querySelector('.social__picture');
-  socialPicture.src = comment.avatar;
-  socialPicture.alt = comment.name;
-  clonedElementContents.querySelector('.social__text').textContent = comment.message;
-  socialComments.appendChild(clonedElementContents);
-}
-
-document.querySelector('body').classList.add('modal-open');
+showBigPicture(data[0]);
