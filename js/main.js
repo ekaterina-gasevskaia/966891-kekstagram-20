@@ -31,7 +31,7 @@ var mockData = function () {
 
     photos.push({
       url: 'photos/' + (index + 1) + '.jpg',
-      description: 'йцукенгшщзхъ',
+      description: 'Фотография',
       likes: getRandomIntInclusive(15, 200),
       comments: comments
     });
@@ -59,3 +59,28 @@ var render = function (dataArray) {
 
 var data = mockData();
 render(data);
+
+var bigPicture = document.querySelector('.big-picture');
+bigPicture.classList.remove('hidden');
+
+bigPicture.querySelector('.big-picture__img > img').src = data[0].url;
+bigPicture.querySelector('.likes-count').textContent = data[0].likes;
+bigPicture.querySelector('.comments-count').textContent = data[0].comments.length;
+bigPicture.querySelector('.social__caption').textContent = data[0].description;
+bigPicture.querySelector('.social__comment-count').classList.add('hidden');
+bigPicture.querySelector('.comments-loader').classList.add('hidden');
+
+var socialComments = bigPicture.querySelector('.social__comments');
+var templateContentComment = document.querySelector('#comment').content;
+
+for (var index = 0; index < data[0].comments.length; index++) {
+  var comment = data[0].comments[index];
+  var clonedElementContents = templateContentComment.cloneNode(true);
+  var socialPicture = clonedElementContents.querySelector('.social__picture');
+  socialPicture.src = comment.avatar;
+  socialPicture.alt = comment.name;
+  clonedElementContents.querySelector('.social__text').textContent = comment.message;
+  socialComments.appendChild(clonedElementContents);
+}
+
+document.querySelector('body').classList.add('modal-open');
