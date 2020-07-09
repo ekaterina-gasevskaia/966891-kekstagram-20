@@ -15,6 +15,10 @@ var getRandomIntInclusive = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+var removeBodyScroll = function () {
+  document.querySelector('body').classList.add('modal-open');
+};
+
 var mockData = function () {
   var photos = [];
 
@@ -59,6 +63,7 @@ var render = function (dataArray) {
 };
 
 var showBigPicture = function (picture) {
+  removeBodyScroll();
   var bigPicture = document.querySelector('.big-picture');
   bigPicture.classList.remove('hidden');
 
@@ -88,10 +93,43 @@ var showBigPicture = function (picture) {
     commentP.textContent = comment.message;
     commentLi.appendChild(commentP);
   }
-
-  document.querySelector('body').classList.add('modal-open');
 };
 
 var data = mockData();
 render(data);
-showBigPicture(data[0]);
+// showBigPicture(data[0]);
+
+var uploadFileInput = document.querySelector('#upload-file');
+
+var openEditor = function () {
+  removeBodyScroll();
+  var imgUploadOverlay = document.querySelector('.img-upload__overlay');
+  imgUploadOverlay.classList.remove('hidden');
+
+  var effectLevelPin = imgUploadOverlay.querySelector('.effect-level__pin');
+  var effectLevelHandler = function (evt) {
+    console.log(evt);
+  };
+  effectLevelPin.addEventListener('mouseup', effectLevelHandler);
+
+  var uploadCancelButton = document.querySelector('#upload-cancel');
+  var uploadCancelButtonHandler = function () {
+    imgUploadOverlay.classList.add('hidden');
+    uploadCancelButton.removeEventListener('click', uploadCancelButtonHandler);
+    effectLevelPin.removeEventListener('mouseup', effectLevelHandler);
+    uploadFileInput.value = '';
+  };
+  uploadCancelButton.addEventListener('click', uploadCancelButtonHandler);
+
+  var uploadCancelEscapeHandler = function (evt) {
+    if (evt.key === 'Escape') {
+      imgUploadOverlay.classList.add('hidden');
+      document.removeEventListener('keydown', uploadCancelEscapeHandler);
+      effectLevelPin.removeEventListener('mouseup', effectLevelHandler);
+      uploadFileInput.value = '';
+    }
+  };
+  document.addEventListener('keydown', uploadCancelEscapeHandler);
+};
+
+uploadFileInput.addEventListener('change', openEditor);
