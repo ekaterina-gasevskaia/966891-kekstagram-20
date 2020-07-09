@@ -1,4 +1,14 @@
 'use strict';
+var USER_NAMES = ['Юлия', 'Алексей', 'Дарья', 'Михаил', 'Алёна', 'Мария'];
+var USER_COMMENTS = [
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+];
+
 var getRandomIntInclusive = function (min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -7,15 +17,6 @@ var getRandomIntInclusive = function (min, max) {
 
 var mockData = function () {
   var photos = [];
-  var userNames = ['Юлия', 'Алексей', 'Дарья', 'Михаил', 'Алёна', 'Мария'];
-  var userComments = [
-    'Всё отлично!',
-    'В целом всё неплохо. Но не всё.',
-    'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-    'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-    'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-    'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
-  ];
 
   for (var index = 0; index < 25; index++) {
     var comments = [];
@@ -24,8 +25,8 @@ var mockData = function () {
       var userIndexRandom = getRandomIntInclusive(0, 5);
       comments.push({
         avatar: 'img/avatar-' + (userIndexRandom + 1) + '.svg',
-        message: userComments[getRandomIntInclusive(0, 5)],
-        name: userNames[userIndexRandom]
+        message: USER_COMMENTS[getRandomIntInclusive(0, 5)],
+        name: USER_NAMES[userIndexRandom]
       });
     }
 
